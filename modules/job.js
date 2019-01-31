@@ -1,3 +1,6 @@
+
+//  Job Model
+
 class Job {
     constructor ( id, name, salary, description, skills, area, differentials, isPcd, isActive ){
         this.id             =   id;
