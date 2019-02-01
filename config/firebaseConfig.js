@@ -10,5 +10,6 @@ admin.initializeApp({
 
 //  Connect to FireStore
 let     db =   admin.firestore();
+db.settings({ timestampsInSnapshots: true });
 
 module.exports  =   db;
