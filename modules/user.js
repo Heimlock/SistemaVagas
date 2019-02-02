@@ -1,3 +1,6 @@
+
+//  User Model
+
 class User {
     constructor ( id, name, email, password ){
         this.id         =   id;
