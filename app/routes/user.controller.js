@@ -2,7 +2,6 @@
 //  User Controller
 
 //  Dependencies
-const userModel = require('../../modules/user.js');
 const { check, validationResult } = require('express-validator/check');
 
 //  Rotas
@@ -119,7 +118,7 @@ module.exports = routes => {
                 id: user.id,
                 name:v.name,
                 email:v.email,
-                password: v.password,
+                // password: v.password,
                 createTime: user.createTime.toDate(),
                 updateTime: user.updateTime.toDate(),
                 readTime: user.readTime.toDate()
