@@ -22,7 +22,7 @@ const   validateToken   =  async ( req, res, next ) => {
         if (user)
             next()
         else
-            return res.status(401).send({auth:false, message:'Invalid Token'});
+            return res.status(401).send({auth:false, message:'Failed to authenticate token'});
     });
 }
 

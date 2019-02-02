@@ -19,7 +19,7 @@ module.exports  =   routes  =>  {
                 filteredUser=   extractUser(filteredUser);
                 let id      =   filteredUser.id;
                 let token   =   await jwt.sign({id}, secretKey);
-                res.status(200).send({auth: true, token: token, user: filteredUser});
+                res.status(200).send({auth: true, token: token/*, user: filteredUser*/});
             }
             else
                 return res.status(404).send({auth: false, message:'Not a Valid Email|Password'});
@@ -36,11 +36,11 @@ module.exports  =   routes  =>  {
         return {
             id: user.id,
             name:v.name,
-            email:v.email,
+            email:v.email/*,
             password: v.password,
             createTime: user.createTime.toDate(),
             updateTime: user.updateTime.toDate(),
-            readTime: user.readTime.toDate()
+            readTime: user.readTime.toDate()*/
         }
     }
 }

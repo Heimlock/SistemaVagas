@@ -2,8 +2,8 @@
 //  Job Controller
 
 //  Dependencies
-const { check, validationResult } = require('express-validator/check');
-const validateToken    =   require('../../config/security/tokenValidator.js');
+const { check, validationResult }   =   require('express-validator/check');
+const validateToken                 =   require('../../config/security/tokenValidator.js');
 
 //  Rotas
 module.exports = routes => {
@@ -12,7 +12,9 @@ module.exports = routes => {
     const   db = routes.config.firebaseConfig.collection('jobs');
 
     //  Retorna todos os Jobs
-    routes.get('/jobs', validateToken, async (req, res) => {
+    routes.get('/jobs',
+        // validateToken,
+        async (req, res) => {
         try {
             await db.get().then( ref => {
                 let jobs    =   [];
@@ -30,7 +32,9 @@ module.exports = routes => {
     });
 
     // Retorna um dado Job
-    routes.get('/jobs/:id', validateToken, async (req, res) => {
+    routes.get('/jobs/:id', 
+        // validateToken, 
+        async (req, res) => {
         var id = req.params.id;
         try
         {
@@ -45,12 +49,14 @@ module.exports = routes => {
     });
 
     //  Inclui um novo Job
-    routes.post('/jobs', [check('name').isLength({ min: 5 }), validateToken], async (req, res) => {
-        if (!validationResult(req).isEmpty()) {
-            return res.status(422).json({
-                errors: validationResult(req).array()
-            });
-        }
+    routes.post('/jobs', 
+        // [check('name').isLength({ min: 5 }), validateToken], 
+        async (req, res) => {
+        // if (!validationResult(req).isEmpty()) {
+        //     return res.status(422).json({
+        //         errors: validationResult(req).array()
+        //     });
+        // }
         try
         {
             await db.add(req.body).then( ref => {
@@ -64,12 +70,14 @@ module.exports = routes => {
     });
 
     //  Update um dado Job
-    routes.put('/jobs/:id', [check('name').isLength({ min: 5 }), validateToken], async (req, res) => {
-        if (!validationResult(req).isEmpty()) {
-            return res.status(422).json({
-                errors: validationResult(req).array()
-            });
-        }
+    routes.put('/jobs/:id', 
+        // [check('name').isLength({ min: 5 }), validateToken], 
+        async (req, res) => {
+        // if (!validationResult(req).isEmpty()) {
+        //     return res.status(422).json({
+        //         errors: validationResult(req).array()
+        //     });
+        // }
         try
         {
             await db.doc(req.params.id).update(req.body).then(() => {
@@ -83,7 +91,9 @@ module.exports = routes => {
     })
 
     //  Deleta um dado Job
-    routes.delete('/jobs/:id', validateToken, async (req, res) => {
+    routes.delete('/jobs/:id', 
+        // validateToken, 
+        async (req, res) => {
         try
         {
             await db.doc(req.params.id).delete().then( () => {
@@ -110,10 +120,10 @@ module.exports = routes => {
             area: v.area,
             differentials: v.differentials,
             isPcd: v.isPcd,
-            isActive: v.isActive,
+            isActive: v.isActive/*,
             createTime: job.createTime.toDate(),
             updateTime: job.updateTime.toDate(),
-            readTime: job.readTime.toDate()
+            readTime: job.readTime.toDate()*/
         }
     }
 }
