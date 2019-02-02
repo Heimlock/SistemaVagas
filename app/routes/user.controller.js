@@ -2,7 +2,6 @@
 //  User Controller
 
 //  Dependencies
-const userModel = require('../../modules/user.js');
 const { check, validationResult } = require('express-validator/check');
 
 //  Rotas
@@ -44,21 +43,21 @@ module.exports = routes => {
     });
 
     //  Inclui um Novo Usuário
-    routes.post('/users', [
-            check('name').isLength({
-                min: 5
-            }),
-            check('email').isEmail(),
-            check('password').isLength({
-                min: 5
-            })
-        ],
+    routes.post('/users', 
+        // [   check('name').isLength({
+        //         min: 5
+        //     }),
+        //     check('email').isEmail(),
+        //     check('password').isLength({
+        //         min: 5
+        //     })
+        // ],
         async (req, res) => {
-            if (!validationResult(req).isEmpty()) {
-                return res.status(422).json({
-                    errors: validationResult(req).array()
-                });
-            }
+            // if (!validationResult(req).isEmpty()) {
+            //     return res.status(422).json({
+            //         errors: validationResult(req).array()
+            //     });
+            // }
             try {
                 await db.add(req.body).then( ref => {
                     res.status(200).send(`User #${ref.id} (${req.body.name}) was Added`);
@@ -71,21 +70,21 @@ module.exports = routes => {
         });
 
     //  Atualiza um Usuario
-    routes.put('/users/:id', [
-            check('name').isLength({
-                min: 5
-            }),
-            check('email').isEmail(),
-            check('password').isLength({
-                min: 5
-            })
-        ],
+    routes.put('/users/:id', 
+        // [   check('name').isLength({
+        //         min: 5
+        //     }),
+        //     check('email').isEmail(),
+        //     check('password').isLength({
+        //         min: 5
+        //     })
+        // ],
         async (req, res) => {
-            if (!validationResult(req).isEmpty()) {
-                return res.status(422).json({
-                    errors: validationResult(req).array()
-                });
-            }
+            // if (!validationResult(req).isEmpty()) {
+            //     return res.status(422).json({
+            //         errors: validationResult(req).array()
+            //     });
+            // }
             try {
                 await db.doc(req.params.id).update(req.body).then(() => {
                     res.send(`User #${req.params.id} was Updated`);
@@ -110,19 +109,19 @@ module.exports = routes => {
         }
     })
 
-        //  Ajust Data Output to Fit the User Model
-        extractUser = user => {
-            let v = user.data();
-            // console.log(v);
-            
-            return {
-                id: user.id,
-                name:v.name,
-                email:v.email,
-                password: v.password,
-                createTime: user.createTime.toDate(),
-                updateTime: user.updateTime.toDate(),
-                readTime: user.readTime.toDate()
-            }
+    //  Ajust Data Output to Fit the User Model
+    extractUser = user => {
+        let v = user.data();
+        // console.log(v);
+        
+        return {
+            id: user.id,
+            name:v.name,
+            email:v.email/*,
+            // password: v.password,
+            createTime: user.createTime.toDate(),
+            updateTime: user.updateTime.toDate(),
+            readTime: user.readTime.toDate()*/
         }
+    }
 }
