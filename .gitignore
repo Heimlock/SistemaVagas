@@ -1,4 +1,4 @@
 node_modules/
-public/node_modules/
+React/node_modules/
 config/FirebaseKey.json
 config/secretKey.js
