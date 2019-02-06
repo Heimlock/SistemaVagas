@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Header   from './components/navigation/Header/Header';
-import Collapse from './components/navigation/Collapse/Collapse';
-import JobsList from './components/JobsList/JobsList';
-import JobForm  from './components/JobForm/JobForm';
+// import Collapse from './components/navigation/Collapse/Collapse';
+import JobsManagement from './components/JobsManagement/JobsManagement';
+// import JobForm  from './components/JobForm/JobForm';
 
 class App extends Component {
   render() {
@@ -13,10 +13,7 @@ class App extends Component {
       <div className="App">
         <Header/>
         <div className="container pt-3 mt-3">
-          <Collapse buttonText="Nova Vaga" collapseID='newJobForm' btnClass='btn-primary'>
-            <JobForm/>
-          </Collapse>
-          <JobsList/>
+          <JobsManagement/>
         </div>
       </div>
     );

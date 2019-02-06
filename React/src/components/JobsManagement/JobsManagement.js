@@ -1,7 +1,10 @@
 
 import React        from 'react';
+import axios        from 'axios';
 
 import JobCard      from "./JobCard/JobCard.js";
+import JobForm      from '../JobForm/JobForm';
+import Collapse     from '../navigation/Collapse/Collapse';
 
 // import vagaDev      from "../../assets/developer.png";
 // import vagaDesigner from "../../assets/designer.png";
@@ -16,19 +19,13 @@ import JobCard      from "./JobCard/JobCard.js";
 // );
 
 
-class JobsList extends React.Component {
-    state = {
-        jobs: [
-            { id:1, name:"Developer", description:"lorem ipsum - dev",    salary:1234,    area:"dev" },
-            { id:2, name:"Tester",    description:"lorem ipsum - tester", salary:4321,    area:"test" },
-            { id:3, name:"Design",    description:"lorem ipsum - Design", salary:9876,    area:"design" },
-            { id:4, name:"Developer", description:"lorem ipsum - dev",    salary:1234,    area:"dev" },
-            { id:5, name:"Tester",    description:"lorem ipsum - tester", salary:4321,    area:"test" },
-            { id:6, name:"Design",    description:"lorem ipsum - Design", salary:9876,    area:"design" },
-            { id:7, name:"Developer", description:"lorem ipsum - dev",    salary:1234,    area:"dev" },
-            { id:8, name:"Tester",    description:"lorem ipsum - tester", salary:4321,    area:"test" },
-            { id:9, name:"Design",    description:"lorem ipsum - Design", salary:9876,    area:"design" }
-        ]
+export default class JobsManagement extends React.Component {
+    state = { jobs: [] }
+
+    jobCreateHandler = (paramNewJob) => {
+        let newList = this.state.jobs;
+        newList.push(paramNewJob);
+        this.setState({ jobs: newList });
     }
 
     jobRemoveHandler = (paramID, paramName) => {        
@@ -47,24 +44,34 @@ class JobsList extends React.Component {
         console.log(name);
     }
 
-    componentWillMount() {
-        console.log('COMPONENT WILL MOUNT');
-    }
+    // componentWillMount() {
+    //     console.log('COMPONENT WILL MOUNT');
+    // }
 
     componentDidMount() {
-        console.log('COMPONENT DID MOUNT');
+        // console.log('COMPONENT DID MOUNT');
+        axios.get('/jobs')
+            .then( response => {
+                this.setState( {jobs: response.data} );
+            }
+            )
+            .catch(
+                error => {
+                    console.error(error);
+                }
+            );
     }
     
-    componentWillUpdate() {
-        console.log('COMPONENT WILL UPDATE');
-    }
+    // componentWillUpdate() {
+    //     console.log('COMPONENT WILL UPDATE');
+    // }
     
-    componentDidUpdate() {
-        console.log('COMPONENT DID UPDATE');
-    }
+    // componentDidUpdate() {
+    //     console.log('COMPONENT DID UPDATE');
+    // }
 
     render() {
-        console.log('RENDER');
+        // console.log('RENDER');
         
         const renderJobs = this.state.jobs.map( job => {
             return <JobCard 
@@ -79,12 +86,17 @@ class JobsList extends React.Component {
         });
 
         return (
-            <div className="row card-columns mt-3">
-                {renderJobs}
+            <div>
+                <Collapse buttonText="Nova Vaga" collapseID='newJobForm' btnClass='btn-primary'>
+                    <JobForm
+                        addItemList={ this.jobCreateHandler }
+                    />
+                </Collapse>
+
+                <div className="row card-columns mt-3">
+                    {renderJobs}
+                </div>
             </div>
         );
     }
 }
-
-
-export default JobsList;
