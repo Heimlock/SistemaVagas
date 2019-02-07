@@ -49,10 +49,10 @@ export default class JobsManagement extends React.Component {
     // }
 
     componentDidMount() {
-        // console.log('COMPONENT DID MOUNT');
+        console.log('COMPONENT DID MOUNT');
         axios.get('/jobs')
             .then( response => {
-                this.setState( {jobs: response.data} );
+                this.setState( {jobs: response.data.data} );
             }
             )
             .catch(
@@ -71,7 +71,7 @@ export default class JobsManagement extends React.Component {
     // }
 
     render() {
-        // console.log('RENDER');
+        console.log('RENDER');
         
         const renderJobs = this.state.jobs.map( job => {
             return <JobCard 

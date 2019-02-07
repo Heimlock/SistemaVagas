@@ -7,11 +7,12 @@ import * as serviceWorker from './serviceWorker';
 import axios from 'axios'
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import '../node_modules/jquery/dist/jquery.min.js';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
+
+// Request Base URL
 // axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.baseURL = 'https://salty-gorge-73556.herokuapp.com/';
 

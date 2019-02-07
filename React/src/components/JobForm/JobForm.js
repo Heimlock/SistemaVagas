@@ -21,13 +21,17 @@ export default class JobForm extends React.Component
 
     postJobHandler  =   ( event ) => {
         let objID = '';
+
+        //  Previnir que a Página atualize
+        event.preventDefault();
+
+        //  Submit to Database
         axios.post('/jobs', this.state.newJob)
             .then( response => {
-                objID = response.data.id;
+                objID = response.data.data;
                 
                 this.props.addItemList( {id:objID, ...this.state.newJob} );
-                event.preventDefault();
-                this.setState( {newJob:{...this.objModel}} );
+                this.setState( {newJob:{...this.objModel}, validated:false} );
             })
             .catch( error => {
                 console.error(error);
@@ -41,9 +45,10 @@ export default class JobForm extends React.Component
     }
 
     render()
-    {        
+    {
         return (
-            <form onSubmit={ this.postJobHandler }>        {/* Form Nova Vaga */}
+            <form onSubmit={ this.postJobHandler }>
+                {/* Form Nova Vaga */}
                 <div className="form-group">
                     <label htmlFor="inputNome">Nome(*)</label>
                     <input  type="text" className="form-control" id="inputNome" name="name" required
