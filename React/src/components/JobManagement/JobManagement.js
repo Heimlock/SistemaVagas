@@ -57,12 +57,12 @@ export default class JobsManagement extends React.Component {
                 .catch(error => {
                     console.error(error);
                 })
-            window.alert('Removido com Sucesso!');
         }
     }
 
-    jobEditHandler = (name) => {
-        console.log(name);
+    jobEditHandler = (paramId) => {
+        console.log(paramId);
+        this.setState({ selectedId: paramId });
     }
 
     // componentWillMount() {

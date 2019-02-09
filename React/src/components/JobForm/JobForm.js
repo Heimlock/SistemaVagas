@@ -30,7 +30,7 @@ export default class JobForm extends React.Component
 
         //  Verifica se é uma Edição ou Adição
         if(this.state.newJob.id){
-            axios.put('/jobs/' + this.state.newJob.id, this.state.newJob)
+            axios.put('/jobs/' + this.state.newJob.id, this.state.newJob, window.getAxiosConfig())
             .then(response => {
               this.props.editedHandler(this.state.newJob.id, this.state.newJob);
               this.setState({ newJob: { ...this.objModel } }); //limpar form
@@ -42,7 +42,7 @@ export default class JobForm extends React.Component
         }
         else{
             //  Submit to Database
-            axios.post('/jobs', this.state.newJob)
+            axios.post('/jobs', this.state.newJob, window.getAxiosConfig())
             .then( response => {
                 objID = response.data.data;
                 
@@ -59,7 +59,7 @@ export default class JobForm extends React.Component
     componentDidUpdate() {
         console.log('did update - id: ' + this.props.editJobId);
         if (this.props.editJobId && !this.state.isEditing) {
-          axios.get('/jobs/' + this.props.editJobId)
+          axios.get('/jobs/' + this.props.editJobId, window.getAxiosConfig())
             .then(response => {
                 this.setState({ newJob: response.data.data, isEditing: true });
                 console.info( `${response.data.message} Ready to be Edit!` );

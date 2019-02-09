@@ -60,6 +60,16 @@ export default class JobDetails extends React.Component {
         <p><b>Habilidades:</b><br/>
         {this.state.job.skills}</p>
 
+        <hr/>
+
+        <p><b>Diferenciais:</b><br/>
+        {this.state.job.differentials}</p>
+
+        <hr/>
+
+        <p><b>Salário Base:</b><br/>
+        R$ {this.state.job.salary}</p>
+
       </section>
     )
   }
