@@ -20,7 +20,9 @@ import Collapse     from '../navigation/Collapse/Collapse';
 
 
 export default class JobsManagement extends React.Component {
-    state = { jobs: [] }
+    state = {   jobs: [],
+                hasError: false,
+                selectedId: '' }
 
     jobCreateHandler = (paramNewJob) => {
         let newList = this.state.jobs;
@@ -28,14 +30,33 @@ export default class JobsManagement extends React.Component {
         this.setState({ jobs: newList });
     }
 
-    jobRemoveHandler = (paramID, paramName) => {        
+    jobEditHandler = (paramId) => {
+        console.log(paramId);
+        this.setState({ selectedId: paramId });
+    }
+
+    jobEditedHandler = (paramId, newJobData) => {
+        const index = this.state.jobs.findIndex(job => job.id === paramId);
+        let jobsList = this.state.jobs;
+        jobsList[index] = newJobData;
+        this.setState({ jobs: jobsList });
+    }
+
+    jobRemoveHandler = (paramId, paramName) => {        
         if( window.confirm(`Deseja realmente remover a vaga '${paramName}'?`) )
         {
-            const index = this.state.jobs.findIndex( job => job.id === paramID );
-            let newList = this.state.jobs;
-            newList.splice( index, 1 );
-            this.setState({jobs:newList});
-    
+            axios.delete(`/jobs/${paramId}`)
+                .then( _ => {
+                    const index = this.state.jobs.findIndex(job => job.id === paramId);
+                    let newList = this.state.jobs;
+                    newList.splice(index, 1);
+                    this.setState({ jobs: newList });
+
+                    window.alert('Removido com sucesso!');
+                })
+                .catch(error => {
+                    console.error(error);
+                })
             window.alert('Removido com Sucesso!');
         }
     }
@@ -50,6 +71,13 @@ export default class JobsManagement extends React.Component {
 
     componentDidMount() {
         console.log('COMPONENT DID MOUNT');
+        const axiosConfig = {
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+            }
+        }
+      
+
         axios.get('/jobs')
             .then( response => {
                 this.setState( {jobs: response.data.data} );
@@ -60,6 +88,10 @@ export default class JobsManagement extends React.Component {
                     console.error(error);
                 }
             );
+    }
+
+    clearSelectedId = () => {
+        this.setState({ selectedId: '' });
     }
     
     // componentWillUpdate() {
@@ -80,16 +112,25 @@ export default class JobsManagement extends React.Component {
                         description={job.description} 
                         salary={job.salary} 
                         area={job.area}
-                        removeHandler={ () => this.jobRemoveHandler(job.id, job.name) }
-                        editHandler={ () => this.jobEditHandler(job.name) }
+                        // removeHandler={ () => this.jobRemoveHandler(job.id, job.name) }
+                        // editHandler={ () => this.jobEditHandler(job.name) }
+                        panelId="newJobForm"
+                        removeHandler={() => this.jobRemoveHandler(job.id, job.name)}
+                        editHandler={() => this.jobEditHandler(job.id)} 
                     />;
         });
 
         return (
             <div>
                 <Collapse buttonText="Nova Vaga" collapseID='newJobForm' btnClass='btn-primary'>
-                    <JobForm
+                    {/* <JobForm
                         addItemList={ this.jobCreateHandler }
+                    /> */}
+                    <JobForm panelId="newJobForm"
+                             addItemList={ this.jobCreateHandler } 
+                             editJobId={ this.state.selectedId } 
+                             clearSelectedId={ this.clearSelectedId }
+                             editedHandler={ this.jobEditedHandler }
                     />
                 </Collapse>
 
