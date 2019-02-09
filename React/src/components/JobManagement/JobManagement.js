@@ -45,7 +45,7 @@ export default class JobsManagement extends React.Component {
     jobRemoveHandler = (paramId, paramName) => {        
         if( window.confirm(`Deseja realmente remover a vaga '${paramName}'?`) )
         {
-            axios.delete(`/jobs/${paramId}`)
+            axios.delete(`/jobs/${paramId}`, window.getAxiosConfig())
                 .then( _ => {
                     const index = this.state.jobs.findIndex(job => job.id === paramId);
                     let newList = this.state.jobs;
@@ -71,23 +71,35 @@ export default class JobsManagement extends React.Component {
 
     componentDidMount() {
         console.log('COMPONENT DID MOUNT');
-        const axiosConfig = {
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
-            }
-        }
+        // const axiosConfig = {
+        //     headers: {
+        //         'Authorization': 'Bearer ' + JSON.parse(window.localStorage.getItem('token'))
+        //     }
+        // }
       
-
-        axios.get('/jobs')
-            .then( response => {
-                this.setState( {jobs: response.data.data} );
-            }
-            )
-            .catch(
-                error => {
+        // axios.get('/jobs', window.getAxiosConfig())
+        //     .then( response => {
+        //         this.setState( {jobs: response.data.data} );
+        //     }
+        //     )
+        //     .catch(
+        //         error => {
+        //             console.error(error);
+        //         }
+        //     );
+        if (!navigator.onLine) {
+            this.setState({ jobs: JSON.parse(localStorage.getItem('jobs')) });
+        }
+        else {
+            axios.get('/jobs', window.getAxiosConfig())
+                .then(response => {
+                    this.setState({ jobs: response.data.data })
+                    localStorage.setItem('jobs', JSON.stringify(response.data.data));
+                })
+                .catch(error => {
                     console.error(error);
-                }
-            );
+                })
+        }
     }
 
     clearSelectedId = () => {
@@ -108,6 +120,7 @@ export default class JobsManagement extends React.Component {
         const renderJobs = this.state.jobs.map( job => {
             return <JobCard 
                         key={job.id} 
+                        id={job.id} 
                         name={job.name} 
                         description={job.description} 
                         salary={job.salary} 

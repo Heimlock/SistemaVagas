@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 
-// import Collapse       from './components/navigation/Collapse/Collapse';
-// import JobForm        from './components/JobForm/JobForm';
 import Header     	  from  './components/navigation/Header/Header';
 import JobManagement  from  './components/JobManagement/JobManagement';
 import Sobre          from  './components/About/About';
 import NotFound       from  './components/navigation/NotFound/NotFound';
 import Login          from  './components/Login/Login';
+import JobDetails     from  './components/JobDetails/JobDetails';
 
 import { Switch, Route } from 'react-router-dom';
-import axios from 'axios';
+import axios             from 'axios';
 
 class App extends Component {
 
@@ -38,17 +36,6 @@ class App extends Component {
     this.setState({ loggedUser: null });
   }
 
-  // render() {
-  //   return (
-  //     <div className="App">
-  //       <Header/>
-  //       <div className="container pt-3 mt-3">
-  //         <JobManagement/>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   render() {
     if (this.state.loggedUser) {
       return (
@@ -57,11 +44,12 @@ class App extends Component {
             logout={ this.logoutHandler }/>
           <div className="container pt-3">
             <Switch>
-              <Route path='/'           component={ JobManagement }/>
-              <Route path='/dashboard'  component={ JobManagement }/>
-              <Route path='/vagas'      component={ JobManagement }/>
-              <Route path='/sobre'      component={ Sobre }/>
-              <Route path='*'           component={ NotFound }/>
+              <Route exact path='/'       component={ JobManagement }/>
+              <Route path='/dashboard'    component={ JobManagement }/>
+              <Route path='/vagas/:jobId' component={ JobDetails }/>
+              <Route path='/vagas'        component={ JobManagement }/>
+              <Route path='/sobre'        component={ Sobre }/>
+              <Route path='*'             component={ NotFound }/>
             </Switch>
           </div>
         </div>

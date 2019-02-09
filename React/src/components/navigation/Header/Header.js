@@ -6,9 +6,14 @@ import logo     from "../../../assets/logo-vagas.png";
 const header = (props) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <Link className="navbar-brand" to='/dashboard'>
+            {/* <Link className="navbar-brand" to='/dashboard'>
                 <img src={ logo } style={ { width: '100px' } }  alt="Logo" />
-            </Link>
+            </Link> */}
+            <div>
+                <Link className="navbar-brand" to='/dashboard'>
+                    <img src={logo} style={{ width: '100px' }}  alt="Logo" />
+                </Link>
+            </div>
             {/* <a className="navbar-brand" href="../../../public/index.html">
                 <img src={logo} style={{ width: "100px" }} alt="Logo" />
             </a> */}
