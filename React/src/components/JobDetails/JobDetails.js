@@ -5,18 +5,22 @@ import developerImg     from    '../../assets/developer.png'
 import testerImg        from    '../../assets/tester.png'
 import designerImg      from    '../../assets/designer.png'
 import backDefault      from    '../../assets/background.jpg'
+import Loading          from    '../navigation/Loading/Loading';
 
 export default class JobDetails extends React.Component {
 
   state = {
-    job: {}
+    job: {},
+    isLoading: false
   }
 
   componentDidMount() {
     if (this.props.match.params.jobId) {
+      this.setState({isLoading:true});
       axios.get('/jobs/' + this.props.match.params.jobId, window.getAxiosConfig())
         .then(response => {
           this.setState({ job: response.data.data });
+          this.setState({isLoading:false});
         })
         .catch(error => {
           alert('Deu erro no servidor!');
@@ -44,33 +48,39 @@ export default class JobDetails extends React.Component {
         break;
     }
 
-    return (
-      <section>
-        <div className="p-5 pt-5" style={{ backgroundImage: `url(${img})`, backgroundSize: 'cover', width: '100%', height: '200px' }}>
-          <h2 className="text-white shadow ">{this.state.job.name}</h2>
-        </div>
+    if( !this.state.isLoading )
+    {
+      return (
+        <section>
+          <div className="p-5 pt-5" style={{ backgroundImage: `url(${img})`, backgroundSize: 'cover', width: '100%', height: '200px' }}>
+            <h2 className="text-white shadow ">{this.state.job.name}</h2>
+          </div>
 
-        <hr/>
+          <hr/>
 
-        <p><b>Descrição:</b><br/>
-        {this.state.job.description}</p>
+          <p><b>Descrição:</b><br/>
+          {this.state.job.description}</p>
 
-        <hr/>
+          <hr/>
 
-        <p><b>Habilidades:</b><br/>
-        {this.state.job.skills}</p>
+          <p><b>Habilidades:</b><br/>
+          {this.state.job.skills}</p>
 
-        <hr/>
+          <hr/>
 
-        <p><b>Diferenciais:</b><br/>
-        {this.state.job.differentials}</p>
+          <p><b>Diferenciais:</b><br/>
+          {this.state.job.differentials}</p>
 
-        <hr/>
+          <hr/>
 
-        <p><b>Salário Base:</b><br/>
-        R$ {this.state.job.salary}</p>
+          <p><b>Salário Base:</b><br/>
+          R$ {this.state.job.salary}</p>
 
-      </section>
-    )
+        </section>
+      )
+    }
+    else {
+      return <Loading/>
+    }
   }
 } 

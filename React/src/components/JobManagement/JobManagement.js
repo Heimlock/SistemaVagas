@@ -5,6 +5,7 @@ import axios        from 'axios';
 import JobCard      from "./JobCard/JobCard.js";
 import JobForm      from '../JobForm/JobForm';
 import Collapse     from '../navigation/Collapse/Collapse';
+import Loading      from '../navigation/Loading/Loading';
 
 // import vagaDev      from "../../assets/developer.png";
 // import vagaDesigner from "../../assets/designer.png";
@@ -115,7 +116,21 @@ export default class JobsManagement extends React.Component {
     // }
 
     render() {
-        console.log('RENDER');
+        let novaVaga = <div></div>
+        // console.log('RENDER');
+
+        if (navigator.onLine) {
+            novaVaga    =   (
+                <Collapse buttonText="Nova Vaga" collapseID='newJobForm' btnClass='btn-primary'>
+                    <JobForm panelId="newJobForm"
+                             addItemList={ this.jobCreateHandler } 
+                             editJobId={ this.state.selectedId } 
+                             clearSelectedId={ this.clearSelectedId }
+                             editedHandler={ this.jobEditedHandler }
+                    />
+                </Collapse>
+            );
+        }
         
         const renderJobs = this.state.jobs.map( job => {
             return <JobCard 
@@ -133,24 +148,23 @@ export default class JobsManagement extends React.Component {
                     />;
         });
 
-        return (
+        const listHTML = (
             <div>
-                <Collapse buttonText="Nova Vaga" collapseID='newJobForm' btnClass='btn-primary'>
-                    {/* <JobForm
-                        addItemList={ this.jobCreateHandler }
-                    /> */}
-                    <JobForm panelId="newJobForm"
-                             addItemList={ this.jobCreateHandler } 
-                             editJobId={ this.state.selectedId } 
-                             clearSelectedId={ this.clearSelectedId }
-                             editedHandler={ this.jobEditedHandler }
-                    />
-                </Collapse>
+                {novaVaga}
 
                 <div className="row card-columns mt-3">
                     {renderJobs}
                 </div>
             </div>
-        );
+        )
+
+        if( this.state.jobs && this.state.jobs.length > 0 )
+        {
+            return listHTML;
+        }
+        else
+        {
+            return <Loading/>;
+        }
     }
 }
